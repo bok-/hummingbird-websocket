@@ -99,7 +99,7 @@ extension RouterMethods {
                 return .init(status: .methodNotAllowed)
             case .upgrade(let headers):
                 context.webSocket.handler.withLockedValue { $0 = WebSocketHandlerReference.Value(context: context, handler: handler) }
-                return .init(status: .ok, headers: headers)
+                return .init(status: .switchingProtocols, headers: headers)
             }
         }
     }
@@ -133,7 +133,7 @@ public struct WebSocketUpgradeMiddleware<Context: WebSocketRequestContext>: Rout
             return .init(status: .methodNotAllowed)
         case .upgrade(let headers):
             context.webSocket.handler.withLockedValue { $0 = .init(context: context, handler: self.handler) }
-            return .init(status: .ok, headers: headers)
+            return .init(status: .switchingProtocols, headers: headers)
         }
     }
 }
